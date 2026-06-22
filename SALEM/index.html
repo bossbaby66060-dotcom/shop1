@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELAWI | Haute Couture & Modern Essentials</title>
+  <meta name="description" content="ELAWI - Discover high-end fashion, organic minimalist collections, and luxury streetwear essentials. Free shipping over Br 150 and 30-day returns.">
+  
+  <!-- Font Awesome for sleek modern vector icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script>if(localStorage.getItem('elawi_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+</head>
+<body>
+
+  <!-- GLOBAL PREMIUM NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container flex-between">
+      <a href="index.html" class="navbar-brand">
+        <img src="assets/logo.jpg" alt="ELAWI Logo" class="navbar-logo">
+      </a>
+      
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="about.html" class="nav-link">Our Story</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="admin.html" class="nav-link" style="color:var(--accent);">Admin</a></li>
+      </ul>
+
+      <div class="navbar-actions">
+        <a href="#" class="action-btn" id="searchToggle" title="Search catalog">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
+        <a href="profile.html#paneFavorites" class="action-btn" title="Favorites / Wishlist">
+          <i class="fa-solid fa-heart"></i>
+          <span class="badge-count" id="wishlistCount">0</span>
+        </a>
+
+        <a href="profile.html" class="action-btn navbar-user-btn" title="My Account">
+          <i class="fa-solid fa-user"></i>
+        </a>
+        <button class="theme-toggle-btn" id="themeToggle" title="Toggle dark / light mode" aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun"></i>
+          <i class="fa-solid fa-moon icon-moon"></i>
+        </button>
+        <div class="menu-toggle" id="menuToggle">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-overlay-close" id="closeSearch">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="search-container">
+      <h2>SEARCH THE CATALOG</h2>
+      <div class="search-input-group">
+        <input type="text" id="globalSearchInput" placeholder="Type keyword and press Enter..." autocomplete="off">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- BLUR BACKDROP OVERLAY -->
+  <div class="overlay" id="sidebarOverlay"></div>
+
+  <!-- HERO VIDEO SECTION -->
+  <header class="hero-slider">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="slide-overlay"></div>
+    <div class="container hero-video-content">
+      <div class="slide-content">
+        <span class="slide-tag">New Season Collection</span>
+        <!-- <h1>ELEVATED MODERN ESSENTIALS</h1> -->
+        <a href="shop.html" class="btn btn-accent">EXPLORE CATALOG <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- COLLECTIONS GRID -->
+    <section class="section-padding container">
+      <div class="section-header">
+        <h2>SHOP BY CATEGORIES</h2>
+        <p>Explore our carefully curated design concepts and aesthetic fabric selections</p>
+      </div>
+      
+      <div class="promo-cards">
+        <!-- Card 1 -->
+        <a href="shop.html" class="promo-card">
+          <img class="promo-img" src="assets/greytop.jpg" alt="Women's Collection">
+          <div class="promo-content">
+            <h3>TROUSERS</h3>
+            <span>Discover Outfits <i class="fa-solid fa-arrow-right-long"></i></span>
+          </div>
+        </a>
+        <!-- Card 2 -->
+        <a href="shop.html" class="promo-card">
+          <img class="promo-img" src="assets/bluetop (1).jpg" alt="Men's Collection">
+          <div class="promo-content">
+            <h3>TOP</h3>
+            <span>Discover Outfits <i class="fa-solid fa-arrow-right-long"></i></span>
+          </div>
+        </a>
+        <!-- Card 3 -->
+        <a href="shop.html" class="promo-card">
+          <img class="promo-img" src="assets/bluetop (2).jpg" alt="Accessories Collection">
+          <div class="promo-content">
+            <h3>TYPE</h3>
+            <span>Discover Pieces <i class="fa-solid fa-arrow-right-long"></i></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- TRENDING NOW SHOWCASE -->
+    <section class="section-padding" style="background-color: var(--surface-muted);">
+      <div class="container">
+        <div class="section-header">
+          <h2>TRENDING NOW</h2>
+          <p>The most sought-after signature pieces in our global community right now</p>
+        </div>
+        
+        <div class="grid-4" id="trendingGrid">
+          <!-- Dynamically populated by script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS SECTION -->
+    <section class="benefits-bar">
+      <div class="container grid-3">
+        <!-- Benefit 1 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <h3>COMPLIMENTARY SHIPPING</h3>
+          <p>Automatic free premium express courier delivery on orders exceeding Br 150</p>
+        </div>
+        <!-- Benefit 2 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </div>
+          <h3>EASY RETURNING</h3>
+          <p>Worry-free returns inside a 30-day window on all standard purchases</p>
+        </div>
+        <!-- Benefit 3 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3>SECURED CHECKOUT</h3>
+          <p>Fully compliant SSL 256-bit dynamic encryption safeguarding private data</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER SUB PANEL -->
+    <section class="section-padding newsletter-banner">
+      <div class="container">
+        <div class="newsletter-box">
+          <h2>ELAWI    PREMIUM     SUBSCRIPTION</h2>
+          <p>Unlock premium access. Register to enjoy a 10% welcome discount, private sale invitations, and early access to limited collections.</p>
+          <form class="newsletter-input-group" id="homeNewsletterForm">
+            <input type="email" placeholder="Enter your email address..." required autocomplete="off">
+            <button type="submit">JOIN NOW</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BRAND PREMIUM FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="grid-4" style="gap: 3rem;">
+        <div>
+          <div class="footer-brand">
+            <h2>ELAWI</h2>
+          </div>
+          <p class="footer-desc">For us, true refinement lies in simplicity, natural materials, and attention to detail.
+Because the finest things are often felt, not only seen.</p>
+          <div class="social-links">
+            <a href="https://www.instagram.com/before.the.name?igsh=MjRnc2d4YnVkdnM0" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.instagram.com/before.the.name?igsh=MjRnc2d4YnVkdnM0" class="social-icon"><i class="fa-brands fa-pinterest"></i></a>
+            <a href="https://www.tiktok.com/@before.the.name5" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+        
+        <div>   
+          <h3 class="footer-heading">COLLECTIONS</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Women's </a></li>
+            <li><a href="shop.html">Men's </a></li>
+            <li><a href="shop.html">Seasonal</a></li>
+            <li><a href="shop.html">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">CUSTOMER SERVICE</h3>
+          <ul class="footer-links">
+            <li><a href="contact.html">Support Desk</a></li>
+            <li><a href="about.html">Brand Heritage</a></li>
+            <li><a href="profile.html">Order Status</a></li>
+            <li><a href="contact.html">Return Portal</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">LOCATION</h3>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <strong>Retail Flagship</strong>
+              ADDIS ABABA, ETHIOPIA
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <strong>Press & Inquiries</strong>
+              concierge@elawi.com
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 ELAWI. All rights reserved. Elegant design & sustainable couture.</p>
+        <p>Addis Ababa &bull; ETHIOPIA </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

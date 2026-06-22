@@ -1,0 +1,13 @@
+{
+  "name": "elawi-web-shop",
+  "version": "1.0.0",
+  "description": "Full-stack migration of ELAWI Web Shop with Express and JSON database.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

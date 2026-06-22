@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard | ELAWI Club Portal</title>
+  <meta name="description" content="View your orders list, check your recommended products, and check your VIP elawi points balances.">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script>if(localStorage.getItem('elawi_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+</head>
+<body>
+
+  <!-- GLOBAL PREMIUM NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container flex-between">
+       <a href="index.html" class="navbar-brand">
+        <img src="assets/logo.jpg" alt="ELAWI Logo" class="navbar-logo">
+      </a>
+      
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="about.html" class="nav-link">Our Story</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="admin.html" class="nav-link" style="color:var(--accent);">Admin</a></li>
+      </ul>
+
+      <div class="navbar-actions">
+        <a href="#" class="action-btn" id="searchToggle"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="profile.html#paneFavorites" class="action-btn">
+          <i class="fa-solid fa-heart"></i>
+          <span class="badge-count" id="wishlistCount">0</span>
+        </a>
+
+        <a href="profile.html" class="action-btn active navbar-user-btn"><i class="fa-solid fa-user"></i></a>
+        <button class="theme-toggle-btn" id="themeToggle" title="Toggle dark / light mode" aria-label="Toggle theme">
+          <i class="fa-solid fa-sun icon-sun"></i>
+          <i class="fa-solid fa-moon icon-moon"></i>
+        </button>
+        <div class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-overlay-close" id="closeSearch"><i class="fa-solid fa-xmark"></i></div>
+    <div class="search-container">
+      <h2>SEARCH THE CATALOG</h2>
+      <div class="search-input-group">
+        <input type="text" id="globalSearchInput" placeholder="Type keyword and press Enter..." autocomplete="off">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- BLUR BACKDROP OVERLAY -->
+  <div class="overlay" id="sidebarOverlay"></div>
+
+  <!-- AUTH GATE OVERLAY (shown when not logged in) -->
+  <div class="profile-gate" id="profileGate">
+    <div class="profile-gate-card">
+      <i class="fa-solid fa-lock gate-icon"></i>
+      <h2>Members Only</h2>
+      <p>Please sign in to access your ELAWI dashboard, track orders, and manage your account.</p>
+      <div class="profile-gate-actions">
+        <a href="auth.html" class="btn btn-primary">Sign In</a>
+        <a href="auth.html?tab=signup" class="btn btn-secondary">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PROFILE LAYOUT -->
+  <main class="container section-padding">
+    <!-- Dynamic greeting bar (populated by JS) -->
+    <div id="profileGreeting"></div>
+    <div class="profile-layout">
+      <!-- Left Column: Navigation Sidebar -->
+      <aside class="profile-nav-card">
+        <div class="profile-nav-header">
+          <div class="profile-avatar-circle">JD</div>
+          <h3>John Doe</h3>
+          <p>Gold Member since 2024</p>
+        </div>
+        <ul class="profile-menu-links">
+          <li class="profile-menu-item active" data-pane="paneDashboard">
+            <i class="fa-solid fa-chart-line"></i> Dashboard Overview
+          </li>
+          <li class="profile-menu-item" data-pane="paneFavorites">
+            <i class="fa-solid fa-heart"></i> My Favorites
+          </li>
+          <li class="profile-menu-item" data-pane="paneAccountSettings">
+            <i class="fa-solid fa-user-gear"></i> Account Settings
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Right Column: Interactive Content Panes -->
+      <section style="flex:1;">
+        
+        <!-- Pane 1: Dashboard Overview -->
+        <div class="profile-pane active" id="paneDashboard">
+          <h2 id="profileWelcomeHeading">WELCOME BACK</h2>
+          
+          <!-- Recommended products based on favorites and search history -->
+          <div style="margin-top: 2rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+            <h3 style="font-size:1.25rem; font-weight:700; letter-spacing: 0.5px; margin: 0;">RECOMMENDED FOR YOU</h3>
+            <p id="recommendationSubtext" style="font-size: 0.85rem; color: var(--gray-500); display: flex; align-items: center; gap: 0.5rem; margin: 0;"></p>
+          </div>
+          <div class="grid-3" id="dashboardRecommendationsGrid" style="gap: 2rem; margin-bottom: 2rem;">
+            <!-- Recommended products will be rendered dynamically here -->
+          </div>
+        </div>
+
+        <!-- Pane 4: My Favorites -->
+        <div class="profile-pane" id="paneFavorites">
+          <h2>MY FAVORITES</h2>
+          <div id="favoritesEmptyView" class="favorites-empty" style="display: none;">
+            <i class="fa-solid fa-heart-crack"></i>
+            <p>You haven't saved any favorites yet.</p>
+            <a href="shop.html" class="btn btn-primary">Browse The Shop</a>
+          </div>
+          <div class="grid-3" id="favoritesGrid" style="margin-top: 2.5rem; gap: 2rem;">
+            <!-- Rendered dynamically by script.js -->
+          </div>
+        </div>
+
+        <!-- Pane 5: Account Settings -->
+        <div class="profile-pane" id="paneAccountSettings">
+          <h2>ACCOUNT SETTINGS</h2>
+          
+          <div class="cart-table-card" style="max-width: 650px; margin-top: 2.5rem; border: 1.5px solid var(--gray-100); padding: 2.5rem;">
+            <form id="accountSettingsForm" novalidate style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div class="grid-2" style="gap: 1.5rem;">
+                <div class="auth-field-group" id="accFirstGroup" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <label for="accFirst" style="font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--gray-500);"><i class="fa-solid fa-user"></i> First Name</label>
+                  <input type="text" id="accFirst" placeholder="Jane" required style="border: 1.5px solid var(--gray-100); padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; transition: var(--transition);">
+                  <span class="auth-field-error" id="accFirstErr" style="color: #e53e3e; font-size: 0.8rem; margin-top: 0.25rem;"></span>
+                </div>
+                <div class="auth-field-group" id="accLastGroup" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <label for="accLast" style="font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--gray-500);">Last Name</label>
+                  <input type="text" id="accLast" placeholder="Doe" required style="border: 1.5px solid var(--gray-100); padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; transition: var(--transition);">
+                  <span class="auth-field-error" id="accLastErr" style="color: #e53e3e; font-size: 0.8rem; margin-top: 0.25rem;"></span>
+                </div>
+              </div>
+
+              <div class="auth-field-group" id="accEmailGroup" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label for="accEmail" style="font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--gray-500);"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                <input type="email" id="accEmail" placeholder="you@example.com" autocomplete="email" required style="border: 1.5px solid var(--gray-100); padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; transition: var(--transition);">
+                <span class="auth-field-error" id="accEmailErr" style="color: #e53e3e; font-size: 0.8rem; margin-top: 0.25rem;"></span>
+              </div>
+
+              <div class="auth-field-group" id="accPassGroup" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label for="accPass" style="font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--gray-500);"><i class="fa-solid fa-lock"></i> New Password (leave blank to keep current)</label>
+                <div class="auth-password-wrap" style="position: relative;">
+                  <input type="password" id="accPass" placeholder="••••••••" autocomplete="new-password" style="border: 1.5px solid var(--gray-100); padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; padding-right: 3rem; transition: var(--transition);">
+                  <button type="button" class="auth-eye-btn" onclick="togglePasswordVis('accPass', this)" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray-500); cursor: pointer;">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+                <span class="auth-field-error" id="accPassErr" style="color: #e53e3e; font-size: 0.8rem; margin-top: 0.25rem;"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="accSubmitBtn" style="align-self: flex-start; margin-top: 1rem;">
+                <span class="auth-btn-text"><i class="fa-solid fa-save"></i> Save Changes</span>
+                <span class="auth-btn-loader" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i></span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- BRAND PREMIUM FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="grid-4" style="gap: 3rem;">
+        <div>
+          <div class="footer-brand">
+            <h2>ELAWI</h2>
+          </div>
+          <p class="footer-desc">Crafting organic luxury minimalist couture, sustainable essentials, and architectural design elements for the contemporary lifestyle.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-pinterest"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-heading">COLLECTIONS</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html">Women's Couture</a></li>
+            <li><a href="shop.html">Men's Essentials</a></li>
+            <li><a href="shop.html">Seasonal Knits</a></li>
+            <li><a href="shop.html">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">CUSTOMER SERVICE</h3>
+          <ul class="footer-links">
+            <li><a href="contact.html">Support Desk</a></li>
+            <li><a href="about.html">Brand Heritage</a></li>
+            <li><a href="profile.html">Order Status</a></li>
+            <li><a href="contact.html">Return Portal</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">THE ATELIER</h3>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <strong>Retail Flagship</strong>
+              28 Via Della Spiga, Milan, Italy
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <strong>Press & Inquiries</strong>
+              concierge@elawi.com
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 ELAWI. All rights reserved. Elegant design & sustainable couture.</p>
+        <p>Milano &bull; New York &bull; Tokyo</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
