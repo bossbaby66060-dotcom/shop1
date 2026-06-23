@@ -140,6 +140,7 @@
       { id:6, title:'Wide-Brim Wool Fedora Hat',      category:'Hats',          price:75,  originalPrice:95,  rating:4.6, reviews:128, color:'charcoal',  size:'OS',  popularity:85, icon:'🎩', iconBg:'linear-gradient(135deg,#2d2a26,#5c5450)', description:'Classic wide-brim fedora made from 100% pressed wool felt with a grosgrain ribbon band.' },
       { id:7, title:'Polarized Aviator Sunglasses',   category:'Sunglasses',    price:145, rating:4.9,          reviews:243, color:'gold',      size:'OS',  popularity:98, icon:'🕶️', iconBg:'linear-gradient(135deg,#4a3b1a,#dfa124)', description:'Titanium-framed polarized aviators with UV400 protection. Lightweight at 18g with spring hinges.' },
       { id:8, title:'Argan Oil Hair Elixir Set',      category:'Hair Products', price:68,  rating:4.7,          reviews:375, color:'terracotta',size:'OS',  popularity:90, icon:'💆', iconBg:'linear-gradient(135deg,#c17f3e,#e8b87a)', description:'Premium 3-piece hair care ritual: cold-pressed Moroccan argan oil serum, volumizing shampoo, and deep-conditioning mask.' },
+      { id:1782138955561, title:'dis', category:'Suits', price:2, rating:4.7, reviews:0, color:'charcoal', size:'M', popularity:80, icon:'🕴️', iconBg:'linear-gradient(135deg,#2d2a26,#4a4540)', description:'434', image: null },
     ];
 
     /* ============================================
@@ -1463,8 +1464,23 @@
             setCategories(catList);
             setLoading(false);
           })
-          .catch(err => {
-            console.error("API error, using local fallback", err);
+          .catch(async err => {
+            console.warn("API error, trying database.json fallback:", err);
+            try {
+              const dbRes = await fetch('database.json');
+              if (dbRes.ok) {
+                const dbData = await dbRes.json();
+                setProducts(dbData.products);
+                setCategories(dbData.categories);
+                setLoading(false);
+                toast('Loaded data from database.json', 'success');
+                return;
+              }
+            } catch (dbErr) {
+              console.warn("database.json fallback failed:", dbErr);
+            }
+
+            console.error("Using local fallback");
             // Local fallback
             const localProds = dbGetProducts();
             const defaultCats = ['Suits','Clothes','Shoes','Watches','Perfume','Hats','Sunglasses','Hair Products'];

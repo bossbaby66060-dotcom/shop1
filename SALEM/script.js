@@ -28,6 +28,7 @@ function initThemeToggle() {
 
 // Global State Management
 let wishlist = JSON.parse(localStorage.getItem('aura_wishlist')) || [];
+let cart = JSON.parse(localStorage.getItem("aura_cart")) || [];
 
 // Product Database
 const defaultProducts = [
@@ -35,8 +36,8 @@ const defaultProducts = [
     id: 1,
     title: "Tailored Slim-Fit Suit",
     category: "Suits",
-    price: 320.00,
-    originalPrice: 420.00,
+    price: 320,
+    originalPrice: 420,
     rating: 4.9,
     reviews: 187,
     color: "charcoal",
@@ -50,7 +51,8 @@ const defaultProducts = [
     id: 2,
     title: "Structured Linen Blazer",
     category: "Clothes",
-    price: 135.00,
+    price: 135,
+    originalPrice: null,
     rating: 4.7,
     reviews: 214,
     color: "tan",
@@ -64,8 +66,8 @@ const defaultProducts = [
     id: 3,
     title: "Oxford Derby Leather Shoes",
     category: "Shoes",
-    price: 210.00,
-    originalPrice: 265.00,
+    price: 210,
+    originalPrice: 265,
     rating: 4.8,
     reviews: 156,
     color: "charcoal",
@@ -79,8 +81,9 @@ const defaultProducts = [
     id: 4,
     title: "Precision Swiss Timepiece",
     category: "Watches",
-    price: 495.00,
-    rating: 5.0,
+    price: 495,
+    originalPrice: null,
+    rating: 5,
     reviews: 89,
     color: "gold",
     size: "OS",
@@ -93,7 +96,8 @@ const defaultProducts = [
     id: 5,
     title: "Signature Eau de Parfum",
     category: "Perfume",
-    price: 95.00,
+    price: 95,
+    originalPrice: null,
     rating: 4.8,
     reviews: 302,
     color: "terracotta",
@@ -107,8 +111,8 @@ const defaultProducts = [
     id: 6,
     title: "Wide-Brim Wool Fedora Hat",
     category: "Hats",
-    price: 75.00,
-    originalPrice: 95.00,
+    price: 75,
+    originalPrice: 95,
     rating: 4.6,
     reviews: 128,
     color: "charcoal",
@@ -122,7 +126,8 @@ const defaultProducts = [
     id: 7,
     title: "Polarized Aviator Sunglasses",
     category: "Sunglasses",
-    price: 145.00,
+    price: 145,
+    originalPrice: null,
     rating: 4.9,
     reviews: 243,
     color: "gold",
@@ -136,7 +141,8 @@ const defaultProducts = [
     id: 8,
     title: "Argan Oil Hair Elixir Set",
     category: "Hair Products",
-    price: 68.00,
+    price: 68,
+    originalPrice: null,
     rating: 4.7,
     reviews: 375,
     color: "terracotta",
@@ -145,6 +151,22 @@ const defaultProducts = [
     icon: "💆",
     iconBg: "linear-gradient(135deg, #c17f3e 0%, #e8b87a 100%)",
     description: "A premium 3-piece hair care ritual: cold-pressed Moroccan argan oil serum, volumizing shampoo with keratin complex, and a deep-conditioning mask. For all hair types."
+  },
+  {
+    id: 1782138955561,
+    title: "dis",
+    category: "Suits",
+    price: 2,
+    originalPrice: null,
+    rating: 4.7,
+    reviews: 0,
+    color: "charcoal",
+    size: "M",
+    popularity: 80,
+    icon: "🕴️",
+    iconBg: "linear-gradient(135deg,#2d2a26,#4a4540)",
+    description: "434",
+    image: null
   }
 ];
 
@@ -366,18 +388,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     products = prodData;
     categories = catData;
   } catch (err) {
-    console.warn("Failed to load products/categories from backend, using client fallback:", err);
+    console.warn("Failed to load products/categories from backend, trying database.json fallback:", err);
     try {
-      const localProds = JSON.parse(localStorage.getItem('aura_admin_products'));
-      if (localProds && Array.isArray(localProds)) {
-        products = localProds;
+      const dbRes = await fetch('database.json');
+      if (dbRes.ok) {
+        const dbData = await dbRes.json();
+        products = dbData.products;
+        categories = dbData.categories;
+        console.log("Successfully loaded data from database.json");
+      } else {
+        throw new Error('database.json fetch failed');
       }
-      const localCats = JSON.parse(localStorage.getItem('aura_categories'));
-      if (localCats && Array.isArray(localCats)) {
-        categories = localCats;
+    } catch (dbErr) {
+      console.warn("database.json fallback failed, using local storage fallback:", dbErr);
+      try {
+        const localProds = JSON.parse(localStorage.getItem('aura_admin_products'));
+        if (localProds && Array.isArray(localProds)) {
+          products = localProds;
+        }
+        const localCats = JSON.parse(localStorage.getItem('aura_categories'));
+        if (localCats && Array.isArray(localCats)) {
+          categories = localCats;
+        }
+      } catch (e) {
+        console.error("Local storage fallback failed:", e);
       }
-    } catch (e) {
-      console.error("Local storage fallback failed:", e);
     }
   }
   
