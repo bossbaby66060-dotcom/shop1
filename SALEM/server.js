@@ -14,8 +14,8 @@ const DEFAULT_PRODUCTS = [
     id: 1,
     title: "Tailored Slim-Fit Suit",
     category: "Suits",
-    price: 320.00,
-    originalPrice: 420.00,
+    price: 320,
+    originalPrice: 420,
     rating: 4.9,
     reviews: 187,
     color: "charcoal",
@@ -29,7 +29,7 @@ const DEFAULT_PRODUCTS = [
     id: 2,
     title: "Structured Linen Blazer",
     category: "Clothes",
-    price: 135.00,
+    price: 135,
     originalPrice: null,
     rating: 4.7,
     reviews: 214,
@@ -44,8 +44,8 @@ const DEFAULT_PRODUCTS = [
     id: 3,
     title: "Oxford Derby Leather Shoes",
     category: "Shoes",
-    price: 210.00,
-    originalPrice: 265.00,
+    price: 210,
+    originalPrice: 265,
     rating: 4.8,
     reviews: 156,
     color: "charcoal",
@@ -59,9 +59,9 @@ const DEFAULT_PRODUCTS = [
     id: 4,
     title: "Precision Swiss Timepiece",
     category: "Watches",
-    price: 495.00,
+    price: 495,
     originalPrice: null,
-    rating: 5.0,
+    rating: 5,
     reviews: 89,
     color: "gold",
     size: "OS",
@@ -74,7 +74,7 @@ const DEFAULT_PRODUCTS = [
     id: 5,
     title: "Signature Eau de Parfum",
     category: "Perfume",
-    price: 95.00,
+    price: 95,
     originalPrice: null,
     rating: 4.8,
     reviews: 302,
@@ -89,8 +89,8 @@ const DEFAULT_PRODUCTS = [
     id: 6,
     title: "Wide-Brim Wool Fedora Hat",
     category: "Hats",
-    price: 75.00,
-    originalPrice: 95.00,
+    price: 75,
+    originalPrice: 95,
     rating: 4.6,
     reviews: 128,
     color: "charcoal",
@@ -104,7 +104,7 @@ const DEFAULT_PRODUCTS = [
     id: 7,
     title: "Polarized Aviator Sunglasses",
     category: "Sunglasses",
-    price: 145.00,
+    price: 145,
     originalPrice: null,
     rating: 4.9,
     reviews: 243,
@@ -119,7 +119,7 @@ const DEFAULT_PRODUCTS = [
     id: 8,
     title: "Argan Oil Hair Elixir Set",
     category: "Hair Products",
-    price: 68.00,
+    price: 68,
     originalPrice: null,
     rating: 4.7,
     reviews: 375,
@@ -129,6 +129,22 @@ const DEFAULT_PRODUCTS = [
     icon: "💆",
     iconBg: "linear-gradient(135deg, #c17f3e 0%, #e8b87a 100%)",
     description: "A premium 3-piece hair care ritual: cold-pressed Moroccan argan oil serum, volumizing shampoo with keratin complex, and a deep-conditioning mask. For all hair types."
+  },
+  {
+    id: 1782138955561,
+    title: "dis",
+    category: "Suits",
+    price: 2,
+    originalPrice: null,
+    rating: 4.7,
+    reviews: 0,
+    color: "charcoal",
+    size: "M",
+    popularity: 80,
+    icon: "🕴️",
+    iconBg: "linear-gradient(135deg,#2d2a26,#4a4540)",
+    description: "434",
+    image: null
   }
 ];
 
@@ -231,7 +247,7 @@ function deleteProductImageFile(imageUrl) {
 app.use('/uploads', express.static(uploadsDir));
 
 // --- PRODUCTS API ---
-app.get('/api/products', (req, res) => {
+app.get(['/api/products', '/api/products.php'], (req, res) => {
   try {
     const data = readData();
     res.json(data.products);
@@ -240,7 +256,7 @@ app.get('/api/products', (req, res) => {
   }
 });
 
-app.post('/api/products', (req, res) => {
+app.post(['/api/products', '/api/products.php'], (req, res) => {
   try {
     const p = req.body;
     if (!p.id || !p.title || !p.category || p.price === undefined) {
@@ -289,9 +305,9 @@ app.post('/api/products', (req, res) => {
   }
 });
 
-app.delete('/api/products/:id', (req, res) => {
+app.delete(['/api/products/:id', '/api/products.php'], (req, res) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id ? Number(req.params.id) : Number(req.query.id);
     const data = readData();
     const idx = data.products.findIndex(item => item.id === id);
     if (idx > -1) {
@@ -328,7 +344,7 @@ app.post('/api/products/reset', (req, res) => {
 });
 
 // --- CATEGORIES API ---
-app.get('/api/categories', (req, res) => {
+app.get(['/api/categories', '/api/categories.php'], (req, res) => {
   try {
     const data = readData();
     res.json(data.categories);
@@ -337,7 +353,7 @@ app.get('/api/categories', (req, res) => {
   }
 });
 
-app.post('/api/categories', (req, res) => {
+app.post(['/api/categories', '/api/categories.php'], (req, res) => {
   try {
     const { name } = req.body;
     if (!name || !name.trim()) {
@@ -354,9 +370,9 @@ app.post('/api/categories', (req, res) => {
   }
 });
 
-app.delete('/api/categories/:name', (req, res) => {
+app.delete(['/api/categories/:name', '/api/categories.php'], (req, res) => {
   try {
-    const name = req.params.name;
+    const name = req.params.name || req.query.name;
     const data = readData();
     data.categories = data.categories.filter(c => c !== name);
     writeData(data);
@@ -367,7 +383,7 @@ app.delete('/api/categories/:name', (req, res) => {
 });
 
 // --- USERS API ---
-app.post('/api/users/register', (req, res) => {
+app.post(['/api/users/register', '/api/users.php'], (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
@@ -388,7 +404,7 @@ app.post('/api/users/register', (req, res) => {
   }
 });
 
-app.post('/api/users/login', (req, res) => {
+app.post(['/api/users/login', '/api/users.php'], (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -406,7 +422,7 @@ app.post('/api/users/login', (req, res) => {
   }
 });
 
-app.post('/api/users/update', (req, res) => {
+app.post(['/api/users/update', '/api/users.php'], (req, res) => {
   try {
     const { currentEmail, firstName, lastName, email, password } = req.body;
     if (!currentEmail || !firstName || !lastName || !email) {
@@ -440,7 +456,7 @@ app.post('/api/users/update', (req, res) => {
 });
 
 // --- ADMIN API ---
-app.post('/api/admin/login', (req, res) => {
+app.post(['/api/admin/login', '/api/admin.php'], (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -458,7 +474,7 @@ app.post('/api/admin/login', (req, res) => {
   }
 });
 
-app.post('/api/admin/change-password', (req, res) => {
+app.post(['/api/admin/change-password', '/api/admin.php'], (req, res) => {
   try {
     const { password } = req.body;
     if (!password || !password.trim()) {
